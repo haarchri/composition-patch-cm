@@ -1,3 +1,4 @@
+---
 apiVersion: pkg.crossplane.io/v1
 kind: Provider
 metadata:
@@ -7,3 +8,12 @@ spec:
   packagePullPolicy: IfNotPresent
   revisionActivationPolicy: Automatic
   revisionHistoryLimit: 1
+---
+apiVersion: pkg.crossplane.io/v1
+kind: Provider
+metadata:
+  name: provider-kubernetes
+spec:
+  package: docker.io/crossplanecontrib/provider-kubernetes:v0.5.0
+  controllerConfigRef:
+    name: crossplane-provider-kubernetes

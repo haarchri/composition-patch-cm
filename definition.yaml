@@ -25,8 +25,11 @@ spec:
               description: >
                 A Test Description
               properties:
-                bucketName:
-                  description: global uniq name for bucket
+                name:
+                  description: configmap to fetch for input values name
+                  type: string
+                namespace:
+                  description: configmap to fetch for input values namespace
                   type: string
             status:
               description: >
@@ -34,7 +37,7 @@ spec:
               properties:
                 bucket:
                   description: >
-                    Freeform field containing information about needed eks fields
+                    Freeform field containing information about needed bucket fields
                   type: object
                   x-kubernetes-preserve-unknown-fields: true
               type: object

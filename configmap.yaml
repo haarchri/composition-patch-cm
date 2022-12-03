@@ -1,0 +1,7 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sop-local-test
+data:
+  bucket: sop-test-bucket-001

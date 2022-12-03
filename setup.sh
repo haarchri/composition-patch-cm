@@ -73,5 +73,15 @@ echo "$ kubectl api-resources | grep crossplane"
 kubectl api-resources | grep crossplane
 
 kubectl apply -f provider.yaml
-kubectl apply -f providerconfig.yaml
+kubectl apply -f rbac.yaml
 kubectl apply -f secret.yaml
+
+echo "Waiting $seconds seconds for Crossplane Providers to become available..."
+sleep $seconds
+kubectl apply -f providerconfig.yaml
+
+kubectl apply -f definition.yaml
+kubectl apply -f composition.yaml
+
+kubectl apply -f configmap.yaml
+kubectl apply -f claim.yaml

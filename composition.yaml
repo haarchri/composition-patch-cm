@@ -7,6 +7,37 @@ spec:
     apiVersion: sop.io/v1alpha1
     kind: bucket
   resources:
+    - name: configmap-input
+      base:
+        apiVersion: kubernetes.crossplane.io/v1alpha1
+        kind: Object
+        metadata:
+          annotations:
+            crossplane.io/external-name: #patched
+        spec:
+          managementPolicy: Observe
+          forProvider:
+            manifest:
+              apiVersion: v1
+              kind: ConfigMap
+              metadata:
+                name: #patched
+                namespace: #patched
+          providerConfigRef:
+            name: default
+      patches:
+        - fromFieldPath: "spec.name"
+          toFieldPath: "metadata.annotations[crossplane.io/external-name]"
+        - fromFieldPath: "spec.name"
+          toFieldPath:  "spec.forProvider.manifest.metadata.name"
+        - fromFieldPath: "spec.namespace"
+          toFieldPath: "spec.forProvider.manifest.metadata.namespace"
+        - type: ToCompositeFieldPath
+          fromFieldPath: status.atProvider.manifest.data.bucket
+          toFieldPath: status.bucket.name
+          policy:
+            fromFieldPath: Optional
+
     - name: s3-bucket
       base:
         apiVersion: s3.aws.crossplane.io/v1beta1
@@ -30,33 +61,12 @@ spec:
           providerConfigRef:
             name: default
       patches:
-        - fromFieldPath: "spec.bucketName"
+        - fromFieldPath: "status.bucket.name"
           toFieldPath: "metadata.annotations[crossplane.io/external-name]"
+          policy:
+            fromFieldPath: Required
         - type: ToCompositeFieldPath
           fromFieldPath: status.atProvider.arn
           toFieldPath: status.bucket.arn
           policy:
             fromFieldPath: Optional
-        - fromFieldPath: "status.bucket.arn"
-          toFieldPath: "metadata.annotations[kesser.io/bucket-arn]"
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
