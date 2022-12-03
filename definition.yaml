@@ -10,9 +10,7 @@ spec:
     categories:
       - crossplane
       - sop
-      - dkb
       - managed
-      - pawel
     kind: bucket
     plural: bucket
   versions:
