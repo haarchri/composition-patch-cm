@@ -1,0 +1,62 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: bucket
+spec:
+  compositeTypeRef:
+    apiVersion: sop.io/v1alpha1
+    kind: bucket
+  resources:
+    - name: s3-bucket
+      base:
+        apiVersion: s3.aws.crossplane.io/v1beta1
+        kind: Bucket
+        metadata:
+          annotations:
+            crossplane.io/external-name: #patched
+        spec:
+          deletionPolicy: Delete
+          forProvider:
+            acl: private
+            locationConstraint: us-east-1
+            paymentConfiguration:
+              payer: BucketOwner
+            serverSideEncryptionConfiguration:
+              rules:
+                - applyServerSideEncryptionByDefault:
+                    sseAlgorithm: AES256
+            versioningConfiguration:
+              status: Enabled
+          providerConfigRef:
+            name: default
+      patches:
+        - fromFieldPath: "spec.bucketName"
+          toFieldPath: "metadata.annotations[crossplane.io/external-name]"
+        - type: ToCompositeFieldPath
+          fromFieldPath: status.atProvider.arn
+          toFieldPath: status.bucket.arn
+          policy:
+            fromFieldPath: Optional
+        - fromFieldPath: "status.bucket.arn"
+          toFieldPath: "metadata.annotations[kesser.io/bucket-arn]"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

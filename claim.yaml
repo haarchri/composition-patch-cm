@@ -1,0 +1,6 @@
+apiVersion: sop.io/v1alpha1
+kind: bucket
+metadata: 
+  name: test
+spec:
+  bucketName: sop-local-test
